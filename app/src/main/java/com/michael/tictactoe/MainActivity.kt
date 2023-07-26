@@ -1,9 +1,9 @@
 package com.michael.tictactoe
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import com.michael.tictactoe.databinding.ActivityMainBinding
@@ -15,6 +15,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.restButton.setOnClickListener{
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     fun buttonClick(view: View) {
@@ -58,9 +62,44 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun win() {
+        var whoWonTheGame = 0 //draw(neither player 1 nor player 2 won the game)
+
         //1 2 3
         //4 5 6
         //7 8 9
+        when {
+            // when player 1 wins:
+            //horizontal
+            binding.B4.text == "X" && binding.B5.text == "X" && binding.B6.text == "X" -> whoWonTheGame = 1
+            binding.B7.text == "X" && binding.B8.text == "X" && binding.B9.text == "X" -> whoWonTheGame = 1
+            binding.B3.text == "X" && binding.B5.text == "X" && binding.B7.text == "X" -> whoWonTheGame = 1
+            //diagonal
+            binding.B1.text == "X" && binding.B5.text == "X" && binding.B9.text == "X" -> whoWonTheGame = 1
+            binding.B1.text == "X" && binding.B2.text == "X" && binding.B3.text == "X" -> whoWonTheGame = 1
+            //vertical
+            binding.B1.text == "X" && binding.B4.text == "X" && binding.B7.text == "X" -> whoWonTheGame = 1
+            binding.B2.text == "X" && binding.B5.text == "X" && binding.B8.text == "X" -> whoWonTheGame = 1
+            binding.B3.text == "X" && binding.B6.text == "X" && binding.B9.text == "X" -> whoWonTheGame = 1
 
+            // when player 2 wins:
+            //horizontal
+            binding.B4.text == "O" && binding.B5.text == "O" && binding.B6.text == "O" -> whoWonTheGame = 2
+            binding.B7.text == "O" && binding.B8.text == "O" && binding.B9.text == "O" -> whoWonTheGame = 2
+            binding.B3.text == "O" && binding.B5.text == "O" && binding.B7.text == "O" -> whoWonTheGame = 2
+            //diagonal
+            binding.B1.text == "O" && binding.B5.text == "O" && binding.B9.text == "O" -> whoWonTheGame = 2
+            binding.B1.text == "O" && binding.B2.text == "O" && binding.B3.text == "O" -> whoWonTheGame = 2
+            //vertical
+            binding.B1.text == "O" && binding.B4.text == "O" && binding.B7.text == "O" -> whoWonTheGame = 2
+            binding.B2.text == "O" && binding.B5.text == "O" && binding.B8.text == "O" -> whoWonTheGame = 2
+            binding.B3.text == "O" && binding.B6.text == "O" && binding.B9.text == "O" -> whoWonTheGame = 2
+        }
+
+        when {
+            whoWonTheGame == 0 && player1.size + player2.size == 9 -> binding.winnerTextView.text = "Draw"
+            whoWonTheGame == 1 -> binding.winnerTextView.text = "Player 1 won"
+            whoWonTheGame == 2 -> binding.winnerTextView.text = "Player 2 won"
+        }
     }
+
 }
